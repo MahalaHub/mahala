@@ -1,2 +1,2 @@
 # mahala
-Android app for domestic natural groceries
+Deeyaspora helper, share transport, first things to do, guidiance for paperworks, living tips
