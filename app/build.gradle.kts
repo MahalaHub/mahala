@@ -76,7 +76,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3:$material3Version")
-    implementation("androidx.compose.material:material:$materialVersion")
+//    implementation("androidx.compose.material:material:$materialVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
     val navigationVersion = "2.7.0"
