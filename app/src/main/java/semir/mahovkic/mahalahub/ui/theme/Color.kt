@@ -15,4 +15,4 @@ val Secondary = Color(0xFFFFB74D)
 val Tertiary = Color(0xFFFFD180)
 val Background = Color(0xFFFFF3E0)
 
-val CategoryCard = Color(0xFF4CAF50)
+val CategoryCard = Color(0xFF2E7D32)
