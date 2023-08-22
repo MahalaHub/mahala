@@ -27,8 +27,7 @@ sealed class Screens(val route: String) {
 @Composable
 fun MainScreen() {
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize()
     ) {
         val navController = rememberNavController()
         val scope = rememberCoroutineScope()
@@ -50,6 +49,7 @@ fun MainScreen() {
             }
         ) { paddingValues ->
             Surface(
+                color = MaterialTheme.colorScheme.background,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = paddingValues.calculateTopPadding())

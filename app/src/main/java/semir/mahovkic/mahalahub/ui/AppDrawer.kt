@@ -32,9 +32,7 @@ fun AppDrawer(
         gesturesEnabled = !isLoginScreen(currentDestination),
         drawerContent = {
             ModalDrawerSheet {
-                Surface(
-                    color = MaterialTheme.colorScheme.background
-                ) {
+                Surface {
                     Column(
                         modifier = Modifier,
                         horizontalAlignment = Alignment.CenterHorizontally
@@ -56,15 +54,6 @@ fun MainScreenDrawerContent(
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
-    Button(onClick = {
-        scope.launch {
-            drawerState.close()
-        }
-        navController.navigate(Screens.Home.route)
-    }) {
-        Text(text = "Home")
-    }
-
     Button(onClick = {
         scope.launch {
             drawerState.close()
