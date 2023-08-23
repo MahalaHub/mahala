@@ -18,8 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import semir.mahovkic.mahalahub.R
 import semir.mahovkic.mahalahub.data.model.Category
-import semir.mahovkic.mahalahub.ui.composables.LogoImage
+import semir.mahovkic.mahalahub.ui.composables.CardImage
 
 @Composable
 fun HomeScreen(
@@ -63,7 +64,7 @@ fun CategoryCard(category: Category, navigateToCategory: (categoryId: Int) -> Un
                     .align(Alignment.TopCenter),
             )
 
-            LogoImage(Modifier.align(Alignment.Center), 60.dp)
+            CardImage(Modifier.align(Alignment.Center), category.image, 80.dp)
 
             Box(
                 modifier = Modifier
@@ -84,7 +85,7 @@ fun CategoryCard(category: Category, navigateToCategory: (categoryId: Int) -> Un
 
 fun categories(): List<Category> {
     return listOf(
-        Category(1, "Prevoz", "Prevoz putnika i robe", "", 1),
-        Category(2, "Provod", "Pronađi lokaciju za izlazak", "", 2)
+        Category(1, "Prevoz", "Prevoz putnika i robe", R.mipmap.travel, 1),
+        Category(2, "Provod", "Pronađi lokaciju za izlazak", R.mipmap.hiking, 2)
     )
 }

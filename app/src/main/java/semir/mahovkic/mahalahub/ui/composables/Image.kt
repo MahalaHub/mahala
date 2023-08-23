@@ -26,6 +26,15 @@ fun LogoImage(
 }
 
 @Composable
+fun CardImage(
+    modifier: Modifier = Modifier,
+    image: Int = R.mipmap.logo,
+    size: Dp = 60.dp
+) {
+    CircularImage(modifier = modifier, icon = image, size = size)
+}
+
+@Composable
 fun IconImage(
     icon: ImageVector,
     modifier: Modifier = Modifier,
