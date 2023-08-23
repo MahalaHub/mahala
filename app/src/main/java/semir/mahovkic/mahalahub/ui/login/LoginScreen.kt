@@ -139,7 +139,7 @@ fun EmailField(emailOrPhoneNumber: MutableState<String>, modifier: Modifier) {
         singleLine = true,
         placeholder = {
             Text(
-                text = "Broj telefona ili email adresa",
+                text = "Email adresa",
                 color = MaterialTheme.colorScheme.outline,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -220,8 +220,8 @@ fun ConfirmLoginButton(
     onClick: () -> Unit
 ) {
     Button(
-        enabled = confirmationCode.trim()
-            .isNotEmpty() && generatedConfirmationCode == confirmationCode,
+        enabled = confirmationCode.trim().isNotEmpty() &&
+                generatedConfirmationCode == confirmationCode,
         modifier = modifier,
         onClick = onClick
     ) {
