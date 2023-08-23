@@ -85,7 +85,16 @@ fun DrawerMainContent(
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        DrawerHeader(modifier = Modifier.align(Alignment.TopStart))
+        DrawerHeader(modifier = Modifier.align(Alignment.TopStart)) {
+            scope.launch {
+                drawerState.close()
+            }
+            navController.navigate(Screens.Home.route) {
+                popUpTo(Screens.Home.route) {
+                    inclusive = true
+                }
+            }
+        }
         DrawerMain()
         DrawerFooter(
             drawerState,
@@ -97,7 +106,7 @@ fun DrawerMainContent(
 }
 
 @Composable
-fun DrawerHeader(modifier: Modifier = Modifier) {
+fun DrawerHeader(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Column(
         modifier = modifier
     ) {
@@ -105,6 +114,7 @@ fun DrawerHeader(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .padding(all = 8.dp)
                 .fillMaxWidth()
+                .clickable { onClick() }
         ) {
             LogoImage(
                 modifier = Modifier.align(Alignment.CenterVertically),
