@@ -22,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import semir.mahovkic.mahalahub.ui.composables.AppName
-import semir.mahovkic.mahalahub.ui.composables.EmptySearchBy
 import semir.mahovkic.mahalahub.ui.composables.LogoImage
 
 @Composable
@@ -31,7 +30,6 @@ fun LoginScreen(
     navigateToHome: () -> Unit
 ) {
     val uiState: LoginUiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val searchBy = remember { mutableStateOf(EmptySearchBy) }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -42,12 +40,25 @@ fun LoginScreen(
                 .align(Alignment.TopCenter)
         )
 
-        LoginForm(
-            modifier = Modifier
-                .padding(start = 40.dp, end = 40.dp, top = 100.dp)
-                .align(Alignment.Center),
-            navigateToHome
-        )
+        if (uiState.confirmationCode.trim().isEmpty()) {
+            LoginForm(
+                modifier = Modifier
+                    .padding(start = 40.dp, end = 40.dp, top = 100.dp)
+                    .align(Alignment.Center)
+            ) { username, emailOrPhoneNumber ->
+                viewModel.generateLoginCode(username, emailOrPhoneNumber)
+            }
+        } else {
+            ConfirmationCodeForm(
+                uiState.confirmationCode,
+                modifier = Modifier
+                    .padding(start = 40.dp, end = 40.dp, top = 100.dp)
+                    .align(Alignment.Center)
+            ) {
+                viewModel.clearLogin()
+                navigateToHome()
+            }
+        }
     }
 }
 
@@ -62,7 +73,10 @@ fun LogoHeader(modifier: Modifier) {
 }
 
 @Composable
-fun LoginForm(modifier: Modifier, onClick: () -> Unit) {
+fun LoginForm(
+    modifier: Modifier = Modifier,
+    onClick: (username: String, emailOrPhoneNumber: String) -> Unit
+) {
     val username = remember { mutableStateOf("") }
     val emailOrPhoneNumber = remember { mutableStateOf("") }
 
@@ -140,7 +154,7 @@ fun LoginButton(
     username: String,
     emailOrPhoneNumber: String,
     modifier: Modifier,
-    onClick: () -> Unit
+    onClick: (username: String, emailOrPhoneNumber: String) -> Unit
 ) {
     val loginEnabled =
         username.trim().isNotEmpty() && emailOrPhoneNumber.trim().isNotEmpty()
@@ -148,11 +162,72 @@ fun LoginButton(
     Button(
         enabled = loginEnabled,
         modifier = modifier,
-        onClick = onClick
+        onClick = {
+            onClick(username, emailOrPhoneNumber)
+        }
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
             text = "Prijavi se",
+            style = MaterialTheme.typography.titleLarge
+        )
+    }
+}
+
+@Composable
+fun ConfirmationCodeForm(
+    generatedConfirmationCode: String,
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    val confirmationCode = remember { mutableStateOf("") }
+
+    Column(
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = confirmationCode.value,
+            onValueChange = { confirmationCode.value = it },
+            shape = RoundedCornerShape(30.dp),
+            singleLine = true,
+            placeholder = {
+                Text(
+                    text = "Unesi kod",
+                    color = MaterialTheme.colorScheme.outline,
+                    style = MaterialTheme.typography.titleMedium
+                )
+            },
+            textStyle = MaterialTheme.typography.titleMedium
+        )
+
+        Text(
+            modifier = Modifier
+                .padding(8.dp)
+                .align(Alignment.CenterHorizontally),
+            text = generatedConfirmationCode,
+            style = MaterialTheme.typography.labelLarge
+        )
+
+        ConfirmLoginButton(generatedConfirmationCode, confirmationCode.value, modifier, onClick)
+    }
+}
+
+@Composable
+fun ConfirmLoginButton(
+    generatedConfirmationCode: String,
+    confirmationCode: String,
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    Button(
+        enabled = confirmationCode.trim()
+            .isNotEmpty() && generatedConfirmationCode == confirmationCode,
+        modifier = modifier,
+        onClick = onClick
+    ) {
+        Text(
+            modifier = Modifier.padding(8.dp),
+            text = "Potvrdi prijavu",
             style = MaterialTheme.typography.titleLarge
         )
     }
