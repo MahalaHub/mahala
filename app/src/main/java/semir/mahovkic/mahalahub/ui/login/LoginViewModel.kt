@@ -17,10 +17,10 @@ class LoginViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun generateLoginCode(username: String, emailOrPhoneNumber: String) {
+    fun generateLoginCode(username: String, email: String) {
         viewModelScope.launch {
-            val loginDetails = usersRepository.generateLoginCode(username, emailOrPhoneNumber)
-            _uiState.value = LoginUiState(username, emailOrPhoneNumber, loginDetails.code)
+            val loginDetails = usersRepository.generateLoginCode(username, email)
+            _uiState.value = LoginUiState(username, email, loginDetails.code)
         }
     }
 

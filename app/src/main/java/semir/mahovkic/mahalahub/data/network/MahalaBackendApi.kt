@@ -10,8 +10,8 @@ class MahalaBackendApi @Inject constructor(
 ) : BackendApi {
     override suspend fun generateLoginCode(
         username: String,
-        emailOrPhoneNumber: String
+        email: String
     ): LoginDetails {
-        return api.generateLoginCode(LoginRequestDto(username, emailOrPhoneNumber))
+        return api.generateLoginCode(LoginRequestDto(username, email))
     }
 }

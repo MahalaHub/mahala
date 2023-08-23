@@ -45,8 +45,8 @@ fun LoginScreen(
                 modifier = Modifier
                     .padding(start = 40.dp, end = 40.dp, top = 100.dp)
                     .align(Alignment.Center)
-            ) { username, emailOrPhoneNumber ->
-                viewModel.generateLoginCode(username, emailOrPhoneNumber)
+            ) { username, email ->
+                viewModel.generateLoginCode(username, email)
             }
         } else {
             ConfirmationCodeForm(
@@ -75,10 +75,10 @@ fun LogoHeader(modifier: Modifier) {
 @Composable
 fun LoginForm(
     modifier: Modifier = Modifier,
-    onClick: (username: String, emailOrPhoneNumber: String) -> Unit
+    onClick: (username: String, email: String) -> Unit
 ) {
     val username = remember { mutableStateOf("") }
-    val emailOrPhoneNumber = remember { mutableStateOf("") }
+    val email = remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -93,7 +93,7 @@ fun LoginForm(
         Spacer(modifier = Modifier.height(20.dp))
 
         EmailField(
-            emailOrPhoneNumber,
+            email,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
@@ -103,7 +103,7 @@ fun LoginForm(
 
         LoginButton(
             username.value,
-            emailOrPhoneNumber.value,
+            email.value,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally),
             onClick
@@ -131,10 +131,10 @@ fun UsernameField(username: MutableState<String>, modifier: Modifier) {
 }
 
 @Composable
-fun EmailField(emailOrPhoneNumber: MutableState<String>, modifier: Modifier) {
+fun EmailField(email: MutableState<String>, modifier: Modifier) {
     OutlinedTextField(
-        value = emailOrPhoneNumber.value,
-        onValueChange = { emailOrPhoneNumber.value = it },
+        value = email.value,
+        onValueChange = { email.value = it },
         shape = RoundedCornerShape(30.dp),
         singleLine = true,
         placeholder = {
@@ -152,18 +152,18 @@ fun EmailField(emailOrPhoneNumber: MutableState<String>, modifier: Modifier) {
 @Composable
 fun LoginButton(
     username: String,
-    emailOrPhoneNumber: String,
+    email: String,
     modifier: Modifier,
-    onClick: (username: String, emailOrPhoneNumber: String) -> Unit
+    onClick: (username: String, email: String) -> Unit
 ) {
     val loginEnabled =
-        username.trim().isNotEmpty() && emailOrPhoneNumber.trim().isNotEmpty()
+        username.trim().isNotEmpty() && email.trim().isNotEmpty()
 
     Button(
         enabled = loginEnabled,
         modifier = modifier,
         onClick = {
-            onClick(username, emailOrPhoneNumber)
+            onClick(username, email)
         }
     ) {
         Text(

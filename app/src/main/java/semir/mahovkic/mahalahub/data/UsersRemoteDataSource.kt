@@ -10,8 +10,8 @@ class UsersRemoteDataSource @Inject constructor(
     private val backendApi: BackendApi,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun generateLoginCode(username: String, emailOrPhoneNumber: String): LoginDetails =
+    suspend fun generateLoginCode(username: String, email: String): LoginDetails =
         withContext(ioDispatcher) {
-            backendApi.generateLoginCode(username, emailOrPhoneNumber)
+            backendApi.generateLoginCode(username, email)
         }
 }

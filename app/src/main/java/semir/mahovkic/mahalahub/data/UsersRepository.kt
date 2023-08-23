@@ -6,7 +6,7 @@ import javax.inject.Inject
 class UsersRepository @Inject constructor(
     private val remoteDataSource: UsersRemoteDataSource
 ) {
-    suspend fun generateLoginCode(username: String, emailOrPhoneNumber: String): LoginDetails {
-        return remoteDataSource.generateLoginCode(username, emailOrPhoneNumber)
+    suspend fun generateLoginCode(username: String, email: String): LoginDetails {
+        return remoteDataSource.generateLoginCode(username, email)
     }
 }
