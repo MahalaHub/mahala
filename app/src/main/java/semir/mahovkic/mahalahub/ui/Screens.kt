@@ -22,6 +22,10 @@ sealed class Screens(val route: String) {
     object Home : Screens("home")
     object Transports : Screens("transports")
     object Hangouts : Screens("hangouts")
+
+    companion object Drawer {
+        object Settings : Screens("settings")
+    }
 }
 
 @Composable

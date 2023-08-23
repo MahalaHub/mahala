@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import semir.mahovkic.mahalahub.R
 
 @Composable
 fun AppDrawer(
@@ -39,7 +42,7 @@ fun AppDrawer(
             ModalDrawerSheet(
                 modifier = Modifier.width(250.dp)
             ) {
-                MainScreenDrawerContent(navController, drawerState, scope)
+                MainDrawerContent(navController, drawerState, scope)
             }
         }) {
         appContent()
@@ -47,52 +50,53 @@ fun AppDrawer(
 }
 
 @Composable
-fun MainScreenDrawerContent(
+fun MainDrawerContent(
     navController: NavHostController,
     drawerState: DrawerState,
     scope: CoroutineScope
 ) {
+    val drawerItems = listOf(
+        DrawerItem(title = "Podešavanja") {
+            navController.navigate(Screens.Drawer.Settings.route)
+        },
+        DrawerItem(title = "Odjavi se") {
+            navController.navigate(Screens.Login.route) {
+                popUpTo(Screens.Home.route) {
+                    inclusive = true
+                }
+            }
+        }
+    )
+
     Box(
         modifier = Modifier
             .fillMaxHeight()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Column(
-            modifier = Modifier
-
-                .fillMaxWidth()
-                .align(Alignment.TopCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(
-                onClick = {
-                    scope.launch {
-                        drawerState.close()
-                    }
-
-                }) {
-                Text(text = "Settings")
-            }
-        }
-
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Button(
-                onClick = {
-                    scope.launch {
-                        drawerState.close()
-                    }
-                    navController.navigate(Screens.Login.route) {
-                        popUpTo(Screens.Home.route) {
-                            inclusive = true
+        LazyColumn {
+            items(drawerItems) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Button(
+                        onClick = {
+                            scope.launch {
+                                drawerState.close()
+                            }
+                            it.onClick()
                         }
+                    ) {
+                        Text(text = it.title)
                     }
-                }) {
-                Text(text = "Logout")
+                }
             }
         }
     }
 }
+
+data class DrawerItem(
+    val icon: Int = R.mipmap.logo,
+    val title: String = "",
+    val onClick: () -> Unit = {}
+)

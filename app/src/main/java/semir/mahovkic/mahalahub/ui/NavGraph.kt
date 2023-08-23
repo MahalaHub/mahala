@@ -15,6 +15,8 @@ import semir.mahovkic.mahalahub.ui.home.HomeScreen
 import semir.mahovkic.mahalahub.ui.home.HomeViewModel
 import semir.mahovkic.mahalahub.ui.login.LoginScreen
 import semir.mahovkic.mahalahub.ui.login.LoginViewModel
+import semir.mahovkic.mahalahub.ui.settings.SettingsScreen
+import semir.mahovkic.mahalahub.ui.settings.SettingsViewModel
 import semir.mahovkic.mahalahub.ui.transport.TransportScreen
 import semir.mahovkic.mahalahub.ui.transport.TransportViewModel
 
@@ -25,7 +27,8 @@ fun MainNavGraph(
     loginViewModel: LoginViewModel = viewModel(),
     homeViewModel: HomeViewModel = viewModel(),
     transportViewModel: TransportViewModel = viewModel(),
-    hangoutViewModel: HangoutViewModel = viewModel()
+    hangoutViewModel: HangoutViewModel = viewModel(),
+    settingsViewModel: SettingsViewModel = viewModel()
 ) {
     NavHost(
         modifier = modifier,
@@ -36,6 +39,7 @@ fun MainNavGraph(
         homeScreen(navController, homeViewModel, this)
         transportScreen(navController, transportViewModel, this)
         hangoutScreen(navController, hangoutViewModel, this)
+        settingsScreen(navController, settingsViewModel, this)
     }
 }
 
@@ -105,6 +109,21 @@ private fun hangoutScreen(
             navController,
             it.arguments?.getInt("categoryId") ?: 0,
             hangoutViewModel
+        )
+    }
+}
+
+private fun settingsScreen(
+    navController: NavHostController,
+    settingsViewModel: SettingsViewModel,
+    navGraphBuilder: NavGraphBuilder
+) {
+    navGraphBuilder.composable(
+        Screens.Drawer.Settings.route
+    ) {
+        SettingsScreen(
+            navController,
+            settingsViewModel
         )
     }
 }

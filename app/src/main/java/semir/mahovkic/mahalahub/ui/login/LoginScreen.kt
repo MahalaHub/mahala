@@ -160,7 +160,7 @@ fun LoginButton(
     ) {
         Text(
             modifier = Modifier.padding(8.dp),
-            text = "Login",
+            text = "Prijavi se",
             style = MaterialTheme.typography.titleLarge
         )
     }
