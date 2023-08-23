@@ -42,44 +42,41 @@ fun CategoriesList(navigateToCategory: (categoryId: Int) -> Unit) {
 
 @Composable
 fun CategoryCard(category: Category, navigateToCategory: (categoryId: Int) -> Unit) {
-    Box {
-        Surface(
-            color = semir.mahovkic.mahalahub.ui.theme.CategoryCard,
-            shape = MaterialTheme.shapes.large,
-            shadowElevation = 2.dp,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(10.dp)
-                .height(150.dp)
-                .clickable { navigateToCategory(category.id) }
-                .align(Alignment.Center)
-        ) {
-            Box {
+    Surface(
+        color = semir.mahovkic.mahalahub.ui.theme.CategoryCard,
+        shape = MaterialTheme.shapes.large,
+        shadowElevation = 2.dp,
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+            .height(150.dp)
+            .clickable { navigateToCategory(category.id) }
+    ) {
+        Box {
+            Text(
+                text = category.name,
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.TopCenter),
+            )
+
+            LogoImage(Modifier.align(Alignment.Center), 60.dp)
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter),
+            ) {
                 Text(
-                    text = category.name,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.titleLarge,
+                    text = category.description,
+                    style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier
                         .padding(8.dp)
-                        .align(Alignment.TopCenter),
+                        .align(Alignment.Center),
                 )
-
-                LogoImage(Modifier.align(Alignment.Center), 60.dp)
-
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter),
-                ) {
-                    Text(
-                        text = category.description,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .align(Alignment.Center),
-                    )
-                }
             }
         }
     }

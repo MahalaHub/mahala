@@ -30,7 +30,7 @@ fun MainNavGraph(
     NavHost(
         modifier = modifier,
         navController = navController,
-        startDestination = Screens.Login.route,
+        startDestination = Screens.Home.route,
     ) {
         loginScreen(navController, loginViewModel, this)
         homeScreen(navController, homeViewModel, this)
