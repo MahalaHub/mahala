@@ -19,9 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import semir.mahovkic.mahalahub.ui.composables.AppName
 import semir.mahovkic.mahalahub.ui.composables.EmptySearchBy
 import semir.mahovkic.mahalahub.ui.composables.LogoImage
 
@@ -56,16 +56,8 @@ fun LogoHeader(modifier: Modifier) {
     Column(
         modifier = modifier
     ) {
-        LogoImage(Modifier)
-
-        Text(
-            text = "Mahala!",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
+        LogoImage()
+        AppName(Modifier.align(Alignment.CenterHorizontally))
     }
 }
 
