@@ -1,5 +1,6 @@
 package semir.mahovkic.mahalahub.ui.login
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,16 +12,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 import semir.mahovkic.mahalahub.ui.composables.AppName
 import semir.mahovkic.mahalahub.ui.composables.LogoImage
 
@@ -29,7 +37,12 @@ fun LoginScreen(
     viewModel: LoginViewModel,
     navigateToHome: () -> Unit
 ) {
-    val uiState: LoginUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val errorMessageState by viewModel.errorMessage.collectAsStateWithLifecycle()
+
+    ShowErrorMessage(errorMessageState) {
+        viewModel.clearErrorMessage()
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -57,6 +70,36 @@ fun LoginScreen(
             ) {
                 viewModel.clearLogin()
                 navigateToHome()
+            }
+        }
+    }
+}
+
+@Composable
+fun ShowErrorMessage(message: String, callback: () -> Unit) {
+    if (message.isNotEmpty()) {
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) }
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues = paddingValues),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LaunchedEffect(key1 = message) {
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = message,
+                            duration = SnackbarDuration.Short
+                        )
+                        callback()
+                    }
+                }
             }
         }
     }
@@ -198,14 +241,6 @@ fun ConfirmationCodeForm(
                 )
             },
             textStyle = MaterialTheme.typography.titleMedium
-        )
-
-        Text(
-            modifier = Modifier
-                .padding(8.dp)
-                .align(Alignment.CenterHorizontally),
-            text = generatedConfirmationCode,
-            style = MaterialTheme.typography.labelLarge
         )
 
         ConfirmLoginButton(generatedConfirmationCode, confirmationCode.value, modifier, onClick)
